@@ -1,5 +1,4 @@
-﻿using HandyControl.Controls;
-using HandyControl.Data;
+﻿using HandyControl.Data;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
@@ -14,11 +13,10 @@ namespace trimr
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : System.Windows.Window
+    public partial class MainWindow : Window
     {
 
         private DispatcherTimer playbackTimer;
-        private readonly CultureInfo cultureInfo = new("en-GB");
         private bool isDragging;
         private bool videoLoaded;
         private Uri inputVideoPath;
@@ -47,7 +45,7 @@ namespace trimr
             string ext = Path.GetExtension(videoElement.Source.LocalPath);
             SaveFileDialog saveFileDialog = new()
             {
-                Filter = string.Format(cultureInfo, "Video file (*{0})|*{0}", ext),
+                Filter = string.Format(new CultureInfo("en-GB"), "Video file (*{0})|*{0}", ext),
                 InitialDirectory = inputVideoPath.LocalPath
             };
 
@@ -110,6 +108,7 @@ namespace trimr
             videoSlider.ValueStart = videoSlider.Minimum;
             videoSlider.ValueEnd = videoSlider.Maximum;
             videoSlider.TickFrequency = videoSlider.Maximum / 30;
+            timePanel.Visibility = Visibility.Visible;
 
             playbackTimer = new();
             playbackTimer.Tick += PlaybackTimer_Tick;
@@ -120,7 +119,7 @@ namespace trimr
             if (uri.IsFile)
             {
                 videoTitle.Text = Path.GetFileName(uri.LocalPath);
-                videoTime.Text = MsToTimeString(videoSlider.ValueStart) + " - " + MsToTimeString(0) + " - " + MsToTimeString(videoElement.NaturalDuration.TimeSpan.TotalMilliseconds);
+                videoCurrentTime.Text = Utils.MsToTimeString(0);
             }
             btnGenVideo.IsEnabled = true;
             videoElement.LoadedBehavior = System.Windows.Controls.MediaState.Manual;
@@ -132,7 +131,7 @@ namespace trimr
             if (videoElement.NaturalDuration.HasTimeSpan)
             {
                 double ts = videoElement.Position.TotalMilliseconds;
-                videoTime.Text = MsToTimeString(videoSlider.ValueStart) + " - " + MsToTimeString(ts) + " - " + MsToTimeString(videoSlider.ValueEnd);
+                videoCurrentTime.Text = Utils.MsToTimeString(ts);
                 if (videoElement.Position.TotalMilliseconds >= videoSlider.ValueEnd && !isDragging)
                 {
                     videoElement.Position = TimeSpan.FromMilliseconds(videoSlider.ValueStart);
@@ -143,13 +142,7 @@ namespace trimr
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             videoTitle.Text = "";
-            videoTime.Text = "";
-        }
-
-        private string MsToTimeString(double ms)
-        {
-            TimeSpan ts = TimeSpan.FromMilliseconds(ms);
-            return ts.ToString(@"mm\:ss\:fff", cultureInfo);
+            videoCurrentTime.Text = "";
         }
 
         private void VideoSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<DoubleRange> e)

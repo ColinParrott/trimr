@@ -1,24 +1,40 @@
-﻿<Window x:Class="trimr.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-namespace:trimr" x:Class="trimr.MainWindow"
         mc:Ignorable="d"
         Loaded="Window_Loaded"  
         WindowStartupLocation="CenterScreen"
         Title="trimr" Height="450" Width="800" WindowStyle="SingleBorderWindow" Background="#FF2C2C2C">
+    <Window.Resources>
+        <local:RangeValueConverter x:Key="RangeValueConverter"/>
+    </Window.Resources>
     <DockPanel LastChildFill="True" Margin="27,6,27,6">
         <TextBlock x:Name="videoTitle" DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="0,0,0,10" FontWeight="Bold" FontFamily="Noto Sans" TextTrimming="CharacterEllipsis" FontStretch="Normal" FontStyle="Normal" FontSize="16" Text="VIDEO TEXT"/>
         <DockPanel DockPanel.Dock="Bottom" LastChildFill="True" Margin="0,10,0,0">
-            <Button Name="btnLoadFromFile" DockPanel.Dock="Left" Click="BtnLoadFromFile_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" UseLayoutRounding="False" VerticalContentAlignment="Center">Load video</Button>
-            <hc:ProgressButton Name="btnGenVideo" DockPanel.Dock="Right" Click="BtnGenVideo_Click" IsChecked="True" IsEnabled="False">Clip video</hc:ProgressButton>
+            <Button x:Name="btnLoadFromFile" DockPanel.Dock="Left" Click="BtnLoadFromFile_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" UseLayoutRounding="False" VerticalContentAlignment="Center" Content="Load video"/>
+            <hc:ProgressButton x:Name="btnGenVideo" DockPanel.Dock="Right" Click="BtnGenVideo_Click" IsChecked="True" IsEnabled="False" Content="Clip video"/>
             <UniformGrid Margin="30,0,30,0">
                 <ProgressBar x:Name="progressBar" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed"/>
-                <hc:RangeSlider Thumb.DragStarted="VideoSlider_DragStarted" Thumb.DragCompleted="VideoSlider_DragCompleted" ValueChanged="VideoSlider_ValueChanged" Name="videoSlider" TickPlacement="TopLeft" Orientation="Horizontal" Cursor="Arrow" Background="#FF787878" ValueEnd="10" Visibility="Hidden"/>
+                <hc:RangeSlider Thumb.DragStarted="VideoSlider_DragStarted" Thumb.DragCompleted="VideoSlider_DragCompleted" ValueChanged="VideoSlider_ValueChanged" x:Name="videoSlider" TickPlacement="TopLeft" Orientation="Horizontal" Cursor="Arrow" Background="#FF787878" ValueEnd="10" Visibility="Hidden"/>
             </UniformGrid>
         </DockPanel>
-        <TextBlock DockPanel.Dock="Bottom" x:Name="videoTime" HorizontalAlignment="Center" Visibility="Visible">0:00</TextBlock>
-        <MediaElement Name="videoElement" ScrubbingEnabled="True" MediaEnded="VideoElement_MediaEnded" MediaOpened="VideoElement_MediaOpened" UnloadedBehavior="Manual" LoadedBehavior="Play" Stretch="Uniform" IsMuted="True"/>
+        <StackPanel x:Name="timePanel" DockPanel.Dock="Bottom" Orientation="Vertical" Visibility="Hidden">
+            <TextBlock  x:Name="videoCurrentTime" HorizontalAlignment="Center" Margin="0,0,0,10"><Run Text="0:00"/></TextBlock>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock x:Name="videoStartEndTime" HorizontalAlignment="Center" >
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource RangeValueConverter}">
+                            <Binding Path="ValueStart"   ElementName="videoSlider"/>
+                            <Binding Path="ValueEnd"  ElementName="videoSlider"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <MediaElement x:Name="videoElement" ScrubbingEnabled="True" MediaEnded="VideoElement_MediaEnded" MediaOpened="VideoElement_MediaOpened" UnloadedBehavior="Manual" LoadedBehavior="Play" Stretch="Uniform" IsMuted="True"/>
     </DockPanel>
 </Window>
