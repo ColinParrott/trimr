@@ -6,7 +6,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:trimr" x:Class="trimr.MainWindow"
         mc:Ignorable="d"
-        Loaded="Window_Loaded"  
+        Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen"
         Title="trimr" Height="450" Width="800" WindowStyle="SingleBorderWindow" Background="#FF2C2C2C">
     <Window.Resources>
