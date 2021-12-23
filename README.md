@@ -7,7 +7,7 @@ A simple video trimming application written in visual C# using FFmpeg.
 </p>
  
 # Installation
-Download the latest installer from the release section. FFmpeg is included as part of the install.
+Download the latest installer from the [Releases](https://github.com/ColinParrott/trimr/releases/latest) section. FFmpeg is included as part of the install.
 
 You will need `.NET 5.0 Desktop Runtime (x64)` which the installer will help you install if it's not present. Also available here: https://dotnet.microsoft.com/en-us/download/dotnet/5.0/runtime
 
