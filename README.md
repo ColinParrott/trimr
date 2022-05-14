@@ -1,4 +1,4 @@
-# <img src="images/trimr_logo.png" width="30"/> trimr
+# <img src="images/trimr_logo.png" width="30"/> trimr <img src="https://img.shields.io/github/v/release/ColinParrott/trimr.svg"/>
 
 A simple video trimming application written in visual C# using FFmpeg.
 
