@@ -24,6 +24,7 @@
         </DockPanel>
         <StackPanel x:Name="timePanel" DockPanel.Dock="Bottom" Orientation="Vertical" Visibility="Hidden">
             <TextBlock  x:Name="videoCurrentTime" HorizontalAlignment="Center" Margin="0,0,0,10"><Run Text="0:00"/></TextBlock>
+            <CheckBox x:Name="muteCheckbox" Content="Mute preview" IsChecked="True"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock x:Name="videoStartEndTime" HorizontalAlignment="Center" >
                     <TextBlock.Text>
@@ -35,6 +36,6 @@
                 </TextBlock>
             </StackPanel>
         </StackPanel>
-        <MediaElement x:Name="videoElement" ScrubbingEnabled="True" MediaEnded="VideoElement_MediaEnded" MediaOpened="VideoElement_MediaOpened" UnloadedBehavior="Manual" LoadedBehavior="Play" Stretch="Uniform" IsMuted="True"/>
+        <MediaElement x:Name="videoElement" ScrubbingEnabled="True" MediaEnded="VideoElement_MediaEnded" MediaOpened="VideoElement_MediaOpened" UnloadedBehavior="Manual" LoadedBehavior="Play" Stretch="Uniform" IsMuted="{Binding IsChecked, ElementName=muteCheckbox}" Volume="25"/>
     </DockPanel>
 </Window>
